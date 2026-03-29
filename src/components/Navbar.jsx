@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router-dom'
 
-function Navbar() {
+function Navbar({ user, onOpenLogin, onLogout }) {
   const cart = JSON.parse(localStorage.getItem('cart')) || []
 
   return (
@@ -18,6 +18,21 @@ function Navbar() {
         </NavLink>
         <NavLink to="/about">About</NavLink>
       </nav>
+
+      <div className="auth-box">
+        {user ? (
+          <>
+            <span className="user-pill">@{user.username}</span>
+            <button className="secondary-btn small-btn" onClick={onLogout}>
+              Logout
+            </button>
+          </>
+        ) : (
+          <button className="primary-btn small-btn" onClick={onOpenLogin}>
+            Login
+          </button>
+        )}
+      </div>
     </header>
   )
 }

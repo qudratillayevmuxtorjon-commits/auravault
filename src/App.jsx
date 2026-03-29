@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import LoginModal from './components/LoginModal'
 import Home from './pages/Home'
 import Explore from './pages/Explore'
 import Favorites from './pages/Favorites'
@@ -12,8 +13,13 @@ import './App.css'
 
 function App() {
   const [, setRefresh] = useState(false)
+  const [user, setUser] = useState(null)
+  const [loginOpen, setLoginOpen] = useState(false)
 
   useEffect(() => {
+    const savedUser = JSON.parse(localStorage.getItem('user'))
+    if (savedUser) setUser(savedUser)
+
     const preventContextMenu = (e) => {
       e.preventDefault()
     }
@@ -41,6 +47,8 @@ function App() {
 
     const rerenderForStorage = () => {
       setRefresh((prev) => !prev)
+      const latestUser = JSON.parse(localStorage.getItem('user'))
+      setUser(latestUser)
     }
 
     document.addEventListener('contextmenu', preventContextMenu)
@@ -56,9 +64,24 @@ function App() {
     }
   }, [])
 
+  const handleLogout = () => {
+    localStorage.removeItem('user')
+    setUser(null)
+  }
+
   return (
     <div className="app">
-      <Navbar />
+      <Navbar
+        user={user}
+        onOpenLogin={() => setLoginOpen(true)}
+        onLogout={handleLogout}
+      />
+
+      <LoginModal
+        isOpen={loginOpen}
+        onClose={() => setLoginOpen(false)}
+        onLogin={setUser}
+      />
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -67,7 +90,15 @@ function App() {
         <Route path="/library" element={<Library />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/about" element={<About />} />
-        <Route path="/wallpaper/:id" element={<WallpaperDetail />} />
+        <Route
+          path="/wallpaper/:id"
+          element={
+            <WallpaperDetail
+              user={user}
+              onOpenLogin={() => setLoginOpen(true)}
+            />
+          }
+        />
       </Routes>
     </div>
   )

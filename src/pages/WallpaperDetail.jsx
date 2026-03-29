@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import wallpapers from '../data/wallpapers'
 
-function WallpaperDetail() {
+function WallpaperDetail({ user, onOpenLogin }) {
   const { id } = useParams()
+  const navigate = useNavigate()
   const wallpaper = wallpapers.find((item) => item.id === id)
 
   const [purchased, setPurchased] = useState(false)
@@ -18,6 +19,11 @@ function WallpaperDetail() {
   }, [id])
 
   const handleAddToCart = () => {
+    if (!user) {
+      onOpenLogin()
+      return
+    }
+
     const savedCart = JSON.parse(localStorage.getItem('cart')) || []
 
     if (!savedCart.includes(id)) {
@@ -26,6 +32,17 @@ function WallpaperDetail() {
       setAddedToCart(true)
       window.dispatchEvent(new Event('storage'))
     }
+
+    navigate('/cart')
+  }
+
+  const handleDownloadLocked = () => {
+    if (!user) {
+      onOpenLogin()
+      return
+    }
+
+    navigate('/cart')
   }
 
   if (!wallpaper) {
@@ -91,11 +108,15 @@ function WallpaperDetail() {
               </a>
             ) : (
               <button className="primary-btn" onClick={handleAddToCart}>
-                {addedToCart ? 'Added to Cart' : 'Add to Cart'}
+                {user ? (addedToCart ? 'Go to Cart' : 'Add to Cart') : 'Login to Continue'}
               </button>
             )}
 
-            <Link to="/cart" className="secondary-btn">Go to Cart</Link>
+            {!purchased && (
+              <button className="secondary-btn" onClick={handleDownloadLocked}>
+                {user ? 'Premium Required' : 'Login Required'}
+              </button>
+            )}
           </div>
 
           <Link to="/explore" className="back-link">← Back to Explore</Link>
