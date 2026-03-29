@@ -132,10 +132,10 @@ function WallpaperDetail({ user, onOpenLogin }) {
             )}
 
             {!purchased && (
-              <button className="telegram-btn" onClick={handleTelegramBuy}>
-                Buy via Telegram
-              </button>
-            )}
+  <Link to={`/checkout/${wallpaper.id}`} className="telegram-btn">
+    Buy via Telegram
+  </Link>
+)}
           </div>
 
           <Link to="/explore" className="back-link">← Back to Explore</Link>

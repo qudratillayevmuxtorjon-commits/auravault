@@ -10,6 +10,7 @@ import WallpaperDetail from './pages/WallpaperDetail'
 import Cart from './pages/Cart'
 import Library from './pages/Library'
 import './App.css'
+import Checkout from './pages/Checkout'
 
 function App() {
   const [, setRefresh] = useState(false)
@@ -84,22 +85,23 @@ function App() {
       />
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/explore" element={<Explore />} />
-        <Route path="/favorites" element={<Favorites />} />
-        <Route path="/library" element={<Library />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/about" element={<About />} />
-        <Route
-          path="/wallpaper/:id"
-          element={
-            <WallpaperDetail
-              user={user}
-              onOpenLogin={() => setLoginOpen(true)}
-            />
-          }
-        />
-      </Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/explore" element={<Explore />} />
+  <Route path="/favorites" element={<Favorites />} />
+  <Route path="/library" element={<Library />} />
+  <Route path="/cart" element={<Cart />} />
+  <Route path="/about" element={<About />} />
+  <Route
+    path="/wallpaper/:id"
+    element={
+      <WallpaperDetail
+        user={user}
+        onOpenLogin={() => setLoginOpen(true)}
+      />
+    }
+  />
+  <Route path="/checkout/:id" element={<Checkout />} />
+</Routes>
     </div>
   )
 }
