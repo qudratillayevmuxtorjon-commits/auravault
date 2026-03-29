@@ -36,13 +36,23 @@ function WallpaperDetail({ user, onOpenLogin }) {
     navigate('/cart')
   }
 
-  const handleDownloadLocked = () => {
+  const handleLockedAction = () => {
     if (!user) {
       onOpenLogin()
       return
     }
 
     navigate('/cart')
+  }
+
+  const handleTelegramBuy = () => {
+    const message = encodeURIComponent(
+      `Salom, men "${wallpaper.title}" wallpaperini sotib olmoqchiman.\n` +
+      `ID: ${wallpaper.id}\n` +
+      `Narxi: ${wallpaper.price}`
+    )
+
+    window.open(`https://t.me/eojmde?text=${message}`, '_blank')
   }
 
   if (!wallpaper) {
@@ -83,14 +93,17 @@ function WallpaperDetail({ user, onOpenLogin }) {
               <span>Mood</span>
               <strong>{wallpaper.mood}</strong>
             </div>
+
             <div>
               <span>Category</span>
               <strong>{wallpaper.category}</strong>
             </div>
+
             <div>
               <span>Resolution</span>
               <strong>{wallpaper.resolution}</strong>
             </div>
+
             <div>
               <span>Price</span>
               <strong>{wallpaper.price}</strong>
@@ -113,8 +126,14 @@ function WallpaperDetail({ user, onOpenLogin }) {
             )}
 
             {!purchased && (
-              <button className="secondary-btn" onClick={handleDownloadLocked}>
+              <button className="secondary-btn" onClick={handleLockedAction}>
                 {user ? 'Premium Required' : 'Login Required'}
+              </button>
+            )}
+
+            {!purchased && (
+              <button className="telegram-btn" onClick={handleTelegramBuy}>
+                Buy via Telegram
               </button>
             )}
           </div>
