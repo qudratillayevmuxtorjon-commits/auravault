@@ -1281,3 +1281,27 @@ button {
     grid-template-columns: 1fr;
   }
 } 
+.card {
+  background: #0f0f1a;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px #6c5ce7;
+}
+
+.card img {
+  width: 100%;
+}
+
+.card button {
+  background: linear-gradient(90deg, #6c5ce7, #00d4ff);
+  border: none;
+  padding: 10px;
+  color: white;
+  width: 100%;
+  cursor: pointer;
+}
